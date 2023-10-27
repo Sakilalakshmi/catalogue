@@ -32,25 +32,32 @@ pipeline {
                 sh 'zip -r catalogue.zip ./* --exclude=.git --exclude=.zip'
             }
         }
-        stage('Publish Artifact') {
+         stage('SAST') {
             steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: '54.162.239.117:8081/',
-                    groupId: 'com.roboshop',
-                    version: '1.0.1',
-                    repository: 'catalogue',
-                    credentialsId: 'nexus-auth',
-                    artifacts: [
-                        [artifactId: 'catalogue',
-                        classifier: '',
-                        file: 'catalogue.zip',
-                        type: 'zip']
-                    ]
-                )
+                echo "SAST Done"
+                echo "package version: $packageVersion"
             }
         }
+         //install pipeline utility steps plugin, if not installed
+        // stage('Publish Artifact') {
+        //     steps {
+        //         nexusArtifactUploader(
+        //             nexusVersion: 'nexus3',
+        //             protocol: 'http',
+        //             nexusUrl: '54.162.239.117:8081/',
+        //             groupId: 'com.roboshop',
+        //             version: '1.0.1',
+        //             repository: 'catalogue',
+        //             credentialsId: 'nexus-auth',
+        //             artifacts: [
+        //                 [artifactId: 'catalogue',
+        //                 classifier: '',
+        //                 file: 'catalogue.zip',
+        //                 type: 'zip']
+        //             ]
+        //         )
+        //     }
+        // }
         stage('Deploy') {
             steps {
                 echo "Deployment"
